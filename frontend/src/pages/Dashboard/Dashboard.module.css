@@ -1,0 +1,180 @@
+:root {
+  --bg: #f6f8fb;            /* fondo general muy claro */
+  --surface: #ffffff;        /* tarjetas, tabla, formularios */
+  --surface-2: #f9fafb;      /* encabezados, alternado de tabla */
+  --text: #0f172a;           /* texto principal */
+  --muted: #64748b;          /* texto secundario */
+  --border: #e5e7eb;         /* bordes */
+  --accent: #10b981;         /* verde */
+  --shadow-soft: 0 10px 30px -12px rgba(2, 6, 23, .12);
+}
+
+/* Lienzo: patrón MUY sutil y sin contraste duro */
+.page {
+  position: relative;
+  isolation: isolate;
+}
+.page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+/* Tarjetas con borde fino y sombra suave (sin translucencias) */
+.card {
+  position: relative;
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+}
+.cardHover { transition: transform .2s ease, box-shadow .25s ease; }
+.cardHover:hover { transform: translateY(-2px); box-shadow: 0 16px 40px -18px rgba(2,6,23,.18); }
+
+/* Título */
+.title {
+  background: linear-gradient(90deg, #0f172a 0%, #0f172a 60%, #2563eb 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Botones */
+.refreshBtn {
+  border-radius: .9rem;
+  padding: .6rem .85rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  transition: transform .1s ease, background .2s ease, box-shadow .2s ease;
+}
+.refreshBtn:hover { background: var(--surface-2); }
+.refreshBtn:active { transform: translateY(1px) scale(.99); }
+
+.primaryBtn {
+  border-radius: 1rem;
+  background: linear-gradient(180deg, #10b981, #059669);
+  color: #fff;
+  box-shadow: 0 10px 18px -10px rgba(5,150,105,.5);
+  transition: transform .12s ease, filter .2s ease;
+}
+.primaryBtn:hover { filter: brightness(1.03); }
+.primaryBtn:active { transform: translateY(1px) scale(.99); }
+
+.secondaryBtn {
+  border-radius: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  transition: transform .12s ease, background .2s ease;
+}
+.secondaryBtn:hover { background: var(--surface-2); }
+.secondaryBtn:active { transform: translateY(1px) scale(.99); }
+
+/* Inputs/selects: SIEMPRE texto oscuro legible */
+.field {
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 0 0 rgba(2,6,23,.04) inset;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.field::placeholder { color: color-mix(in oklab, var(--muted) 75%, white); }
+.field:focus {
+  outline: none;
+  border-color: color-mix(in oklab, var(--accent) 60%, var(--border));
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 22%, transparent);
+}
+
+/* Tabla */
+.tableWrap {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+}
+.thead {
+  position: sticky;
+  top: 0;
+  background: var(--surface-2);
+  box-shadow: 0 1px 0 0 rgba(2,6,23,.06);
+}
+.row { transition: background-color .15s ease; }
+.row:hover { background: color-mix(in oklab, var(--accent) 8%, var(--surface)); }
+.copyBtn {
+  opacity: 0;
+  transform: translateY(-1px);
+  transition: opacity .15s ease, transform .15s ease;
+}
+.row:hover .copyBtn { opacity: 1; transform: translateY(0); }
+
+/* Pills */
+.pill {
+  --pill-bg: #f1f5f9;
+  --pill-fg: #334155;
+  --pill-dot: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  font-size: .72rem;
+  padding: .28rem .6rem;
+  border-radius: 999px;
+  color: var(--pill-fg);
+  background: var(--pill-bg);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--pill-bg) 40%, #000);
+}
+.pill::before {
+  content: "";
+  width: .5em; height: .5em; border-radius: 999px; background: var(--pill-dot);
+  box-shadow: 0 0 0 1px color-mix(in oklab, #000 8%, transparent);
+}
+.pill--main  { --pill-bg: #ecfdf5; --pill-fg: #065f46; --pill-dot: #10b981; }
+.pill--smurf { --pill-bg: #eff6ff; --pill-fg: #1e40af; --pill-dot: #3b82f6; }
+.pill--banned{ --pill-bg: #fff1f2; --pill-fg: #9f1239; --pill-dot: #f43f5e; }
+.pill--other { --pill-bg: #f1f5f9; --pill-fg: #334155; --pill-dot: #94a3b8; }
+
+/* Stats */
+.statsCard {
+  position: relative;
+  border-radius: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  padding: 1.15rem;
+  overflow: hidden;
+}
+.statsCard::after {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  background: radial-gradient(300px 120px at var(--x, 60%) var(--y, 20%), rgba(16,185,129,.10), transparent 40%);
+  transition: opacity .25s;
+  opacity: .8;
+  pointer-events: none;
+}
+.statsCard:hover::after { opacity: 1; }
+
+/* Loader puntitos */
+.dotPulse { --c: #64748b; display: inline-flex; gap: 4px; }
+.dotPulse i { width: 5px; height: 5px; border-radius: 999px; background: var(--c); animation: pulse .9s infinite ease-in-out; }
+.dotPulse i:nth-child(2) { animation-delay: .1s; }
+.dotPulse i:nth-child(3) { animation-delay: .2s; }
+@keyframes pulse {
+  0%, 100% { transform: translateY(0); opacity: .6; }
+  50% { transform: translateY(-2px); opacity: 1; }
+}
+
+/* Focus visible accesible */
+:where(button, [role="button"], select, input).focusVisible:focus-visible {
+  outline: 3px solid color-mix(in oklab, var(--accent) 70%, transparent);
+  outline-offset: 2px;
+}
+
+/* alternado suave */
+tbody tr:nth-child(even) { background: var(--surface-2); }
+
+/* Nota: he retirado el auto-dark (prefers-color-scheme)
+   Para activar dark en el futuro, aplica una clase .dark al <html> o al contenedor
+   y crea un bloque específico con esos tokens. */

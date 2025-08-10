@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AppUser {
+  id           String @id @default(uuid())
+  email        String @unique
+  passwordHash String
+
+  dekBlob Bytes?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt // <-- añade @default(now())
+
+  // si aún no lo tienes, recuerda el lado inverso de GameAccount:
+  accounts GameAccount[]
+}
+
+model Game {
+  id       Int           @id @default(autoincrement())
+  name     String        @unique
+  accounts GameAccount[]
+}
+
+model GameAccount {
+  id            String   @id @default(uuid())
+  userId        String
+  gameId        Int
+  alias         String
+  username      String
+  region        String?
+  status        Status   @default(OTHER)
+  mfaEnabled    Boolean  @default(false)
+  recoveryEmail String?
+  notes         String?
+  secretBlob    Bytes?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // 🔗 relaciones
+  user AppUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game Game    @relation(fields: [gameId], references: [id])
+
+  @@index([userId])
+  @@index([gameId])
+}
+
+enum Status {
+  MAIN
+  SMURF
+  BANNED
+  OTHER
+}
