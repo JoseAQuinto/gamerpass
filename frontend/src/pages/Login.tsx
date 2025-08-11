@@ -73,7 +73,6 @@ export default function Login() {
     <div className="mx-auto w-full max-w-md rounded-2xl border bg-white/80 p-6 shadow-sm">
       {/* Tabs */}
       <div className="mb-6 grid grid-cols-2 rounded-xl border bg-slate-50 p-1 text-sm">
-        <div>PARGUELON</div>
         <button
           type="button"
           onClick={() => setMode("login")}
